@@ -1,33 +1,36 @@
-const {
-    GraphQLObjectType,
-    GraphQLSchema,
-} = require('graphql');
-  
-const {
-    employeeQueries,
-    employeeMutations,
-} = require('./employeeQL.js');
-   
-let RootQuery = new GraphQLObjectType({
-    name: 'Query',      //Return this type of object
-    fields: () => ({
-        employees: employeeQueries.employees,
-    })
-});
+const { gql } = require('apollo-server-express');
+const Employee = require('./employeeSchema');
 
-let RootMutation = new GraphQLObjectType({
-    name: "Mutation",
-    fields: () => ({
-        addEmployee: employeeMutations.addEmployee,
-        deleteEmployee: employeeMutations.deleteEmployee,
-    })
-});
+const typeDefs = gql`
+    type Employee {
+        _id: ID,
+        name: String
+        dept: String
+        position: String
+    }
+    type Query {
+        employees: [Employee]
+    }
+    type Mutation {
+        addEmployee(name: String, dept: String, position: String): Employee
+        deleteEmployee(_id: ID): Employee
+    }
+`;
 
+const resolvers = {
+    Query: {
+        employees: () => {
+            return Employee.getEmployees();
+        }
+    },
+    Mutation: {
+        addEmployee: (_, {name, dept, position}) => {
+            return Employee.addEmployee({ name, dept, position });
+        },
+        deleteEmployee: (_, { _id }) => {
+            return Employee.deleteEmployee(_id);
+        }
+    }
+}
 
-let schema = new GraphQLSchema({
-    query: RootQuery,
-    mutation: RootMutation
-});
-
-module.exports = schema;
-  
+module.exports = { typeDefs, resolvers };

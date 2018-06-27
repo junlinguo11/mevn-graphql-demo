@@ -22,10 +22,6 @@ employeeSchema.statics.addEmployee = function(employee) {
     return this.create(employee);
 }
 
-// employeeSchema.methods.addEmployee = function() {
-//     return this.save();
-// }
-
 employeeSchema.statics.getEmployees = function() {
     return this.find({}).exec();
 }
