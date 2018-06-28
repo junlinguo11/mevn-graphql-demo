@@ -5,9 +5,9 @@
             <li class="collection-header">
                 <h4>Employees</h4>
             </li>
-            <li v-for="employee in employees" v-bind:key="employee.id" class="collection-item">
+            <li v-for="employee in employees" v-bind:key="employee._id" class="collection-item">
                 <div class="chip">{{employee.dept}}</div>{{employee.employee_id}}:{{employee.name}}
-                <i class="fa fa-trash" @click="deleteEmployee(employee.id)"></i>
+                <i class="fa fa-trash" @click="deleteEmployee(employee._id)"></i>
             </li>
         </ul>
 

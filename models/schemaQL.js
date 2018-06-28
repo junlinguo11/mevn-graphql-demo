@@ -3,7 +3,8 @@ const Employee = require('./employeeSchema');
 
 const typeDefs = gql`
     type Employee {
-        _id: ID,
+        _id: ID
+        employee_id: String
         name: String
         dept: String
         position: String
@@ -12,7 +13,7 @@ const typeDefs = gql`
         employees: [Employee]
     }
     type Mutation {
-        addEmployee(name: String, dept: String, position: String): Employee
+        addEmployee(employee_id: String, name: String, dept: String, position: String): Employee
         deleteEmployee(_id: ID): Employee
     }
 `;
@@ -24,8 +25,8 @@ const resolvers = {
         }
     },
     Mutation: {
-        addEmployee: (_, {name, dept, position}) => {
-            return Employee.addEmployee({ name, dept, position });
+        addEmployee: (_, { employee_id, name, dept, position }) => {
+            return Employee.addEmployee({ employee_id, name, dept, position });
         },
         deleteEmployee: (_, { _id }) => {
             return Employee.deleteEmployee(_id);
